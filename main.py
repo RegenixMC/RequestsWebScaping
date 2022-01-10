@@ -5,6 +5,7 @@ import time
 import socket
 from pushbullet import Pushbullet
 import datetime
+import sys
 
 # CONFIG START
 pushbulletAPI_KEY = 'o.S1dbtZulvxmAnLJeWcJlKOfwF2N2rXNd'
@@ -15,7 +16,10 @@ delay = True
 printItem = True
 # CONFIG END
 
-pb = Pushbullet(pushbulletAPI_KEY)
+try:
+    pb = Pushbullet(pushbulletAPI_KEY)
+except:
+    print('Failed to connect to push bullet api!')
 
 count = 0
 printItemElement = False
@@ -44,9 +48,12 @@ while True:
                     'Accept-Language': 'en-US, en;q=0.5'})
 
 
-        webpage = requests.get(microcenterItem, headers=HEADERS)
-        soup = BeautifulSoup(webpage.content, "html.parser")
-        dom = etree.HTML(str(soup))
+        try:
+            webpage = requests.get(microcenterItem, headers=HEADERS)
+            soup = BeautifulSoup(webpage.content, "html.parser")
+            dom = etree.HTML(str(soup))
+        except:
+            sys.exit('No wifi!')
 
         print('Opened webpage.')
         
